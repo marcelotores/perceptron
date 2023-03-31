@@ -9,7 +9,11 @@ dataset = np.array([
 ])
 
 rotulos = np.array([0, 1, 1, 1])
+pesos = np.zeros(2)
+print(pesos)
 
 pnn = Perceptron.Perceptron(0.5, 2)
 
-pnn.treino(dataset, rotulos)
+#pnn.treino(dataset, rotulos)
+print(pnn.predicao(dataset, pesos))
+
