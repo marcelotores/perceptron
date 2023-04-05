@@ -10,22 +10,26 @@ class Perceptron:
     def treino(self, dataset, rotulos):
         entradas = dataset.shape[1]
         self.pesos = np.zeros(entradas)
-
-        dataset_e_rotulos = zip(dataset, rotulos)
-
+        print(self.pesos)
+        # dataset_e_rotulos = zip(dataset, rotulos)
+        print("[INFO] Treinando o perceptron")
         for _ in range(self.epocas):
-            for input, target in (dataset_e_rotulos):
-                pass
-                # novo_peso = peso + taxa_aprendizado * erro * input
-
+            print(f"--- Epoca {self.epocas} ---")
+            # print(f"Pesos: {self.pesos}")
+            for input, target in zip(dataset, rotulos):
+                p = self.predicao(input, self.pesos)
+                p_step = self.step(p)
+                print(f'Entrada={input}, ground-truth={target}, pred={p_step}')
+                print("pesos:", self.pesos)
+                if target != p_step:
+                    erro = target - p
+                    self.pesos += self.taxa_aprendizado * erro * input
+        # return self.pesos
 
     def step(self, x):
         return 1 if x > 0 else 0
 
-    def predicao(self, data_set, pesos):
-        dataset_predito = np.dot(data_set, pesos)
-        return dataset_predito
-        # peso_1 * entrada_1 +
-        # peso_2 * entrada_2 +
-        # peso_n * entrada_n + bias
-        # chama a step e retorna ela
+    def predicao(self, input, pesos):
+        soma_entradas_pesos = np.dot(input, pesos)
+        bias = -1
+        return soma_entradas_pesos + bias
