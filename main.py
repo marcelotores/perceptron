@@ -14,6 +14,6 @@ rotulos_and = np.array([0, 0, 0, 1])
 
 pnn = Perceptron.Perceptron(0.5, 4)
 
-print(pnn.treino(dataset, rotulos_ou))
+print(pnn.treino2(dataset, rotulos_ou))
 
 
