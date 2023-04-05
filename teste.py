@@ -12,8 +12,27 @@ dataset_e_rotulos = zip(dataset, rotulos)
 
 #print(tuple(dataset_e_rotulos))
 
+# calcula tamanho do vetor
 entradas = dataset.shape[1]
+pesos2 = np.zeros((1, entradas))
+
 pesos = np.zeros(entradas)
 
-print(entradas)
-print(pesos)
+input = dataset[1]
+
+#print("Multiplicação: ", np.dot(input, pesos))
+
+linhas = pesos2.shape[0]
+vetor_pesos = np.zeros(linhas)
+
+print(linhas)
+print(vetor_pesos)
+
+vetor_pesos = np.append(vetor_pesos, 2)
+print(vetor_pesos)
+
+vetor_pesos = np.append(vetor_pesos, 5)
+print(vetor_pesos)
+
+print(vetor_pesos.shape[0])
+
