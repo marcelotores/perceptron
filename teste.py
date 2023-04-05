@@ -12,9 +12,8 @@ dataset_e_rotulos = zip(dataset, rotulos)
 
 #print(tuple(dataset_e_rotulos))
 
+entradas = dataset.shape[1]
+pesos = np.zeros(entradas)
 
-for i, j in zip(dataset, rotulos):
-    print(i, " ", j)
-
-for i, j in zip(dataset, rotulos):
-    print(i, " ", j)
+print(entradas)
+print(pesos)
