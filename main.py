@@ -11,9 +11,15 @@ dataset = np.array([
 
 rotulos_ou = np.array([0, 1, 1, 1])
 rotulos_and = np.array([0, 0, 0, 1])
+rotulos3 = np.array([
+    1, 2, 3
+])
 
-pnn = Perceptron.Perceptron(0.5, 4)
+bias_camada_oculta = []
+bias_camada_saida = []
 
-print(pnn.treino2(dataset, rotulos_ou))
+pnn = Perceptron.Perceptron(0.5, 1, 2, -1, 3, 0)
+
+print(pnn.treino(dataset, rotulos_ou))
 
 
