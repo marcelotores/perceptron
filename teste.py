@@ -25,14 +25,18 @@ input = dataset[1]
 linhas = pesos2.shape[0]
 vetor_pesos = np.zeros(linhas)
 
-print(linhas)
-print(vetor_pesos)
+#print(linhas)
+#print(vetor_pesos)
 
 vetor_pesos = np.append(vetor_pesos, 2)
-print(vetor_pesos)
+#print(vetor_pesos)
 
-vetor_pesos = np.append(vetor_pesos, 5)
-print(vetor_pesos)
+#vetor_pesos = np.append(vetor_pesos, 5)
+#print(vetor_pesos)
 
-print(vetor_pesos.shape[0])
+#print(vetor_pesos.shape[0])
 
+bias_camada_oculta = np.array([1, 2])
+
+vetor_soma = np.array(([1, 1]))
+print(bias_camada_oculta + vetor_soma)
