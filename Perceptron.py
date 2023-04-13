@@ -12,7 +12,6 @@ class Perceptron:
         self.bias_camada_saida = bias_camada_saida
 
     def treino(self, dataset, rotulos):
-
         qtd_col_dataset = dataset.shape[1]
         self.pesos1 = np.zeros((self.camada_oculta, qtd_col_dataset))
         self.pesos2 = np.zeros((self.camada_saida, self.camada_oculta))
@@ -43,21 +42,6 @@ class Perceptron:
                         count+=1
             acuracia = (count / dataset.shape[0] * 100)
             print(f'Acurácia: {acuracia}%')
-
-            #print('vetor soma de pesos1: ', vetor_soma_pesos_1)
-            #print('vetor de pesos1: ', self.pesos1)
-            #print('vetor de predições1: ', predicoes1)
-            #print('vetor soma de pesos2: ', vetor_soma_pesos_2)
-            #print('vetor de pesos 2: ', self.pesos2)
-            #print('vetor de predições2: ', predicoes2)
-                #print('predicao:', predicoes1)
-                #p_step = self.step(p)
-                #print(f'Entrada={input}, ground-truth={target}, pred={p_step}')
-                #print("pesos:", self.pesos)
-                #if target != p_step:
-                    #erro = target - p
-                    #self.pesos += self.taxa_aprendizado * erro * input
-        # return self.pesos
 
     def step(self, pesos1):
         predicao = []

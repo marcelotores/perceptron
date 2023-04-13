@@ -1,5 +1,6 @@
 import numpy as np
 import Perceptron
+import mlp
 
 dataset = np.array([
     [0, 0],
@@ -25,4 +26,5 @@ pnn = Perceptron.Perceptron(taxa_de_aprendizado, epocas, neuronios_camada_oculta
 
 pnn.treino(dataset, rotulos_xor)
 
-
+#nw = mlp.Mlp(taxa_de_aprendizado, epocas, neuronios_camada_oculta, bias_camada_oculta, neuronios_camada_saida, bias_camada_saida)
+#nw.treino(dataset, rotulos_xor)
