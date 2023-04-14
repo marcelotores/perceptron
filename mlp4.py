@@ -64,8 +64,7 @@ class Perceptron:
         return arr
 
     def sigmoide(self, pesos1):
-        S2 = 1 / (1 + np.exp(-pesos1))
-        return np.where(S2 >= 0.5, 1, 0)
+        return 1/(1+np.exp(-pesos1))
 
     def tangente_hiperbolica(self, pesos1):
         #return np.tanh(pesos1)
@@ -73,8 +72,27 @@ class Perceptron:
         return np.where(S2 >= 1, 1, 0)
 
     def predicao(self, input, pesos1, bias):
-        return np.dot(input, pesos1.T) + bias
+        return (input @ pesos1) + bias
 
+    def predict(X, pesos1, pesos2, bias_camada_oculta, bias_camada_saida):
+        """computes predictions with learned parameters
+
+        Args:
+            X (ndarray): matrix of features
+            W1 (ndarray): weight matrix for the first layer
+            W2 (ndarray): weight matrix for the second layer
+            b1 (ndarray): bias vector for the first layer
+            b2 (ndarray): bias vector for the second layer
+
+        Returns:
+            d (ndarray): vector of predicted values
+        """
+
+        # Z1 = self.predicao(pesos1, X, bias_camada_oculta)
+        # S1 = self.predicao(pesos1)
+        # Z2 = linear_function(pesos2, S1, bias_camada_saida)
+        # S2 = sigmoid_function(Z2)
+        return 1
 
 
 
