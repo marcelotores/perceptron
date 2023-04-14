@@ -18,17 +18,6 @@ dataset = np.array([
     [1, 1]
 ])
 
+arr = np.array([1, 2, 3, 4])
 
-def linear_function(W, dataset, b):
-    """computes net input as dot product
-
-    Args:
-        W (ndarray): weight matrix
-        X (ndarray): matrix of features
-        b (ndarray): vector of biases
-
-    Returns:
-        Z (ndarray): weighted sum of features
-        """
-
-    return (X @ W) + b
+print(1 - arr)

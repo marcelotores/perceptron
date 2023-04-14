@@ -40,6 +40,8 @@ def train_mlp(X, y, hidden_units=2, learning_rate=0.1, epochs=1):
         W1 -= learning_rate * dW1
         b1 -= learning_rate * db1
 
+
+
     return W1, b1, W2, b2
 
 # Treinamento da MLP

@@ -23,7 +23,7 @@ class Perceptron:
             count = 0
             for input, target in zip(dataset, rotulos):
                 vetor_soma_pesos_1 = self.predicao(input, self.pesos1, self.bias_camada_oculta)
-                predicoes1 = self.step(vetor_soma_pesos_1)
+                predicoes1 = self.sigmoide(vetor_soma_pesos_1)
                 vetor_soma_pesos_2 = self.predicao(predicoes1, self.pesos2, self.bias_camada_saida)
                 #predicoes2 = self.step(vetor_soma_pesos_2)
                 predicoes2 = self.sigmoide(vetor_soma_pesos_2)
@@ -36,8 +36,8 @@ class Perceptron:
                     if pred2 != target:
                         erro = target - pred2
                         self.pesos2 += self.taxa_aprendizado * erro * predicoes1
-                        for pred1 in predicoes1:
-                            self.pesos1 += self.taxa_aprendizado * erro * input
+                        #for pred1 in predicoes1:
+                        self.pesos1 += self.taxa_aprendizado * erro * input
                     else:
                         count+=1
             acuracia = (count / dataset.shape[0] * 100)
@@ -54,7 +54,8 @@ class Perceptron:
         return arr
 
     def sigmoide(self, pesos1):
-        return 1 / (1 + np.exp(-pesos1))
+        S2 = 1 / (1 + np.exp(-pesos1))
+        return np.where(S2 >= 0.5, 1, 0)
 
     def predicao(self, input, pesos1, bias):
         vetor_funcao_soma_pesos_1 = np.zeros(0)
