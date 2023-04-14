@@ -54,6 +54,15 @@ class Mlp():
         return vetor_funcao_soma_pesos_1 + bias
         # deve retornar um vetor de pesos
 
+    def forward(self, dataset):
+        """Realiza a propagação para a frente da MLP."""
+        self.soma_pesos1 = np.dot(dataset, self.pesos1) + self.bias_camada_oculta
+        self.funcao_ativacao1 = np.tanh(self.soma_pesos1)
+        #self.soma_pesos2 = np.dot(self.funcao_ativacao1, self.pesos2) + self.bias_camada_saida
+        #self.funcao_ativacao2 = np.tanh(self.soma_pesos2)
+        #return self.funcao_ativacao2
+        #return (dataset @ self.pesos1) + self.bias_camada_oculta
+        return self.soma_pesos1
     def treino(self, dataset, rotulos):
 
         qtd_col_dataset = dataset.shape[1]
@@ -61,46 +70,8 @@ class Mlp():
         self.pesos2 = np.zeros((self.camada_saida, self.camada_oculta))
         print("[INFO] Treinando o perceptron")
 
-
-
         for _ in range(self.epocas):
             print(f"--- Epoca {_} ---")
-            # print(f"Pesos: {self.pesos}")
-            count = 0
-            for input, target in zip(dataset, rotulos):
-                vetor_soma_pesos_1 = self.predicao(input, self.pesos1, self.bias_camada_oculta)
-                predicoes1 = self.sigmoide(vetor_soma_pesos_1)
-                vetor_soma_pesos_2 = self.predicao(predicoes1, self.pesos2, self.bias_camada_saida)
-                # predicoes2 = self.step(vetor_soma_pesos_2)
-                predicoes2 = self.sigmoide(vetor_soma_pesos_2)
-                #predicoes2 = self.hiperbolica2(vetor_soma_pesos_2)
+            funcao_ativacao2 = self.forward(dataset)
+            print(funcao_ativacao2)
 
-                print(f'Entrada={input}, ground-truth={target}, pred={predicoes2}')
-
-                # Contador para contabilizar o número de predições corretas
-
-                delta2 = (predicoes2 - target) * predicoes2 * (1 - predicoes2)
-                W2_gradients = predicoes1.T @ delta2
-                self.pesos2 = self.pesos2 - W2_gradients * self.taxa_aprendizado
-
-                # update output bias
-                self.bias_camada_saida = self.bias_camada_saida - np.sum(delta2, axis=0, keepdims=True) * self.taxa_aprendizado
-
-                # update hidden weights
-                delta1 = (delta2 @ self.pesos2) * predicoes1 * (1 - predicoes1)
-                W1_gradients = dataset.T @ delta1
-                self.pesos1 = self.pesos1 - W1_gradients * self.taxa_aprendizado
-
-                # update hidden bias
-                self.bias_camada_oculta = self.bias_camada_oculta - np.sum(delta1, axis=0, keepdims=True) * self.taxa_aprendizado
-
-#                for pred2 in predicoes2:
-#                    if pred2 != target:
-#                        erro = target - pred2
-#                        self.pesos2 += self.taxa_aprendizado * erro * predicoes1
-#                        for pred1 in predicoes1:
-#                            self.pesos1 += self.taxa_aprendizado * erro * input
-#                    else:
-#                        count += 1
-#            acuracia = (count / dataset.shape[0] * 100)
-#            print(f'Acurácia: {acuracia}%')
