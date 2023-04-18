@@ -56,6 +56,10 @@ def linear_function(W, X, b):
 
     return (X @ W) + b
 
+def tangente_hiperbolica(Z):
+    """Função tangente hiperbólica."""
+    return (np.exp(Z) - np.exp(-Z)) / (np.exp(Z) + np.exp(-Z))
+
 
 def sigmoid_function(Z):
     """computes sigmoid activation element wise
@@ -99,9 +103,12 @@ def predict(X, W1, W2, b1, b2):
 
     Z1 = linear_function(W1, X, b1)
     S1 = sigmoid_function(Z1)
+    #S1 = tangente_hiperbolica(Z1)
     Z2 = linear_function(W2, S1, b2)
+    #S2 = tangente_hiperbolica(Z2)
     S2 = sigmoid_function(Z2)
     return np.where(S2 >= 0.5, 1, 0)
+    #return np.where(S2 >= 0, 1, 0)
 
 
 def fit(X, y, n_features=2, n_neurons=3, n_output=1, iterations=10, eta=0.001):
@@ -134,8 +141,10 @@ def fit(X, y, n_features=2, n_neurons=3, n_output=1, iterations=10, eta=0.001):
         ##~~ Forward-propagation ~~##
 
         Z1 = linear_function(param['W1'], X, param['b1'])
+        #S1 = tangente_hiperbolica(Z1)
         S1 = sigmoid_function(Z1)
         Z2 = linear_function(param['W2'], S1, param['b2'])
+        #S2 = tangente_hiperbolica(Z2)
         S2 = sigmoid_function(Z2)
 
         ##~~ Error computation ~~## Pra que?
