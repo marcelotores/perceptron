@@ -1,14 +1,87 @@
 import numpy as np
 class Mlp():
-    def __init__(self, taxa_aprendizado=0.1, epocas=10, camada_oculta=1,
-                 bias_camada_oculta=1, camada_saida=1, bias_camada_saida=1):
+    def __init__(self, dataset, taxa_aprendizado=0.1, epocas=10, qtd_neuronios_camada_oculta=1, qtd_neuronios_camada_saida=1):
+
         self.taxa_aprendizado = taxa_aprendizado
         self.epocas = epocas
-        self.camada_oculta = camada_oculta
-        self.camada_saida = camada_saida
-        self.bias_camada_oculta = bias_camada_oculta
-        self.bias_camada_saida = bias_camada_saida
+        self.qtd_neuronios_camada_oculta = qtd_neuronios_camada_oculta
+        self.qtd_neuronios_camada_saida = qtd_neuronios_camada_saida
 
+        qtd_col_dataset = dataset.shape[1]
+        self.pesos_camada_1 = np.random.uniform(size=(qtd_col_dataset,  self.qtd_neuronios_camada_oculta))
+        self.bias_camada_oculta = np.random.uniform(size=(1, self.qtd_neuronios_camada_oculta))
+        self.pesos_camada_2 = np.random.uniform(size=(self.qtd_neuronios_camada_oculta, self.qtd_neuronios_camada_saida))
+        self.bias_camada_saida = np.random.uniform(size=(1, self.qtd_neuronios_camada_saida))
+
+    def funcao_linear(self, pesos, dataset, bias):
+        return np.dot(dataset, pesos) + bias
+
+    def sigmoide(self, soma_dos_pesos):
+        return 1 / (1 + np.exp(-soma_dos_pesos))
+
+    def custo(self, neuronios_ativados, rotulos):
+        return (np.mean(np.power(neuronios_ativados - rotulos, 2))) / 2
+
+    def predicao(self, dataset, pesos_camada_1, pesos_camada_2, bias_camada_oculta, bias_camada_saida):
+
+        Z1 = self.funcao_linear(pesos_camada_1, X, bias_camada_oculta)
+        S1 = self.sigmoide(Z1)
+        # S1 = tangente_hiperbolica(Z1)
+        Z2 = self.funcao_linear(pesos_camada_2, S1, bias_camada_saida)
+        # S2 = tangente_hiperbolica(Z2)
+        S2 = self.sigmoide(Z2)
+        return np.where(S2 >= 0.5, 1, 0)
+
+    def treino(self, X, y):
+        ## ~~ Initialize parameters ~~##
+
+        ## ~~ storage errors after each iteration ~~##
+        errors = []
+
+        for _ in range(self.epocas):
+            print(f'Época {_}')
+
+            ## Forward ##
+
+            Z1 = self.funcao_linear(self.pesos_camada_1, X, self.bias_camada_oculta)
+            # S1 = tangente_hiperbolica(Z1)
+            S1 = self.sigmoide(Z1)
+            Z2 = self.funcao_linear(self.pesos_camada_2, S1, self.bias_camada_saida)
+            # S2 = tangente_hiperbolica(Z2)
+            S2 = self.sigmoide(Z2)
+
+            ## Erros ##
+            error = self.custo(S2, y)
+            errors.append(error)
+
+            ## Calcula os Gradientes ##
+
+            delta2 = (S2 - y) * (S2 * (1 - S2))
+            gradiente_peso2 = np.dot(S1.T, delta2)
+            db2 = np.sum(delta2, axis=0)
+
+            delta1 = np.dot(delta2, self.pesos_camada_2.T) * (S1 * (1 - S1))
+            gradiente_peso1 = np.dot(X.T, delta1)
+            db1 = np.sum(delta1, axis=0)
+
+            # Atualização dos pesos
+            self.pesos_camada_2 -= self.taxa_aprendizado * gradiente_peso2
+            self.bias_camada_saida -= self.taxa_aprendizado * db2
+            self.pesos_camada_1 -= self.taxa_aprendizado * gradiente_peso1
+            self.bias_camada_oculta -= self.taxa_aprendizado * db1
+
+            print('S1', S1)
+            print('S2', S2)
+            print('Erro: ', error)
+
+            parametros = {
+                "pesos_camada_oculta": self.pesos_camada_1,
+                "pesos_camada_saida": self.pesos_camada_2,
+                "bias_camada_oculta": self.bias_camada_oculta,
+                "bias_camada_saida": self.bias_camada_saida
+            }
+
+        return errors, parametros
 def init_parameters(n_features, n_neurons, n_output):
     """generate initial parameters sampled from an uniform distribution
 

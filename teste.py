@@ -4,6 +4,8 @@ import cmath
 import mlp4
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
+import mlpf
+
 
 
 # # expected values
@@ -13,13 +15,21 @@ y = np.array([[0, 1, 1, 0]]).T
 # # features
 X = np.array([[0, 0, 1, 1],
              [0, 1, 0, 1]]).T
-#
-#
-errors, param = mlp4.fit(X, y, n_features=2, iterations=5000, eta=0.1)
-y_pred = mlp4.predict(X, param["W1"], param["W2"], param["b1"], param["b2"])
+
+mlp = mlpf.Mlp(X, 0.1, 4500, 3, 1)
+errors, param = mlp.treino(X, y)
+y_pred = mlp.predicao(X, param["pesos_camada_oculta"], param["pesos_camada_saida"], param["bias_camada_oculta"], param["bias_camada_saida"])
 num_correct_predictions = (y_pred == y).sum()
 accuracy = (num_correct_predictions / y.shape[0]) * 100
 print('Multi-layer perceptron accuracy: %.2f%%' % accuracy)
+#
+#
+#errors, param = mlp4.fit(X, y, n_features=2, iterations=5000, eta=0.1)
+#y_pred = mlp4.predict(X, param["W1"], param["W2"], param["b1"], param["b2"])
+#num_correct_predictions = (y_pred == y).sum()
+#accuracy = (num_correct_predictions / y.shape[0]) * 100
+#print('Multi-layer perceptron accuracy: %.2f%%' % accuracy)
+#print('Erro:', errors)
 
 
 iris = load_iris()
