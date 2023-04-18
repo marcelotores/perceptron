@@ -29,6 +29,10 @@ def init_parameters(n_features, n_neurons, n_output):
     b1 = np.random.uniform(size=(1, n_neurons))
     W2 = np.random.uniform(size=(n_neurons, n_output))
     b2 = np.random.uniform(size=(1, n_output))
+    # W1 = np.random.uniform(size=(n_neurons, n_features))
+    # b1 = np.random.uniform(size=(1, n_neurons))
+    # W2 = np.random.uniform(size=(n_output, n_neurons))
+    # b2 = np.random.uniform(size=(1, n_output))
 
     parameters = {"W1": W1,
                   "b1": b1,
