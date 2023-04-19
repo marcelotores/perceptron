@@ -16,7 +16,12 @@ y = np.array([[0, 1, 1, 0]]).T
 X = np.array([[0, 0, 1, 1],
              [0, 1, 0, 1]]).T
 
-mlp = mlpf.Mlp(X, 0.1, 4500, 3, 1)
+taxa_aprendizado = 0.1
+epocas = 4500
+qtd_neuronios_camada_oculta = 3
+qtd_neuronios_camada_saida = 1
+
+mlp = mlpf.Mlp(X, taxa_aprendizado, epocas, qtd_neuronios_camada_oculta, qtd_neuronios_camada_saida)
 errors, param = mlp.treino(X, y)
 y_pred = mlp.predicao(X, param["pesos_camada_oculta"], param["pesos_camada_saida"], param["bias_camada_oculta"], param["bias_camada_saida"])
 num_correct_predictions = (y_pred == y).sum()
