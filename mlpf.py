@@ -19,18 +19,24 @@ class Mlp():
     def sigmoide(self, soma_dos_pesos):
         return 1 / (1 + np.exp(-soma_dos_pesos))
 
+    def tangente_hiperbolica(self, soma_dos_pesos):
+        """Função tangente hiperbólica."""
+
+        return (np.exp(soma_dos_pesos) - np.exp(-soma_dos_pesos)) / (np.exp(soma_dos_pesos) + np.exp(-soma_dos_pesos))
+
     def custo(self, neuronios_ativados, rotulos):
         return (np.mean(np.power(neuronios_ativados - rotulos, 2))) / 2
 
     def predicao(self, dataset, pesos_camada_1, pesos_camada_2, bias_camada_oculta, bias_camada_saida):
 
-        Z1 = self.funcao_linear(pesos_camada_1, X, bias_camada_oculta)
-        S1 = self.sigmoide(Z1)
-        # S1 = tangente_hiperbolica(Z1)
+        Z1 = self.funcao_linear(pesos_camada_1, dataset, bias_camada_oculta)
+        #S1 = self.sigmoide(Z1)
+        S1 = self.tangente_hiperbolica(Z1)
         Z2 = self.funcao_linear(pesos_camada_2, S1, bias_camada_saida)
-        # S2 = tangente_hiperbolica(Z2)
-        S2 = self.sigmoide(Z2)
-        return np.where(S2 >= 0.5, 1, 0)
+        S2 = self.tangente_hiperbolica(Z2)
+        #S2 = self.sigmoide(Z2)
+        #return np.where(S2 >= 0.5, 1, 0)
+        return np.where(S2 <= -0.6, -1, np.where(S2 <= 0.6, 0, 1))
 
     def treino(self, X, y):
         ## ~~ Initialize parameters ~~##
@@ -44,11 +50,11 @@ class Mlp():
             ## Forward ##
 
             Z1 = self.funcao_linear(self.pesos_camada_1, X, self.bias_camada_oculta)
-            # S1 = tangente_hiperbolica(Z1)
-            S1 = self.sigmoide(Z1)
+            S1 = self.tangente_hiperbolica(Z1)
+            #S1 = self.sigmoide(Z1)
             Z2 = self.funcao_linear(self.pesos_camada_2, S1, self.bias_camada_saida)
-            # S2 = tangente_hiperbolica(Z2)
-            S2 = self.sigmoide(Z2)
+            S2 = self.tangente_hiperbolica(Z2)
+            #S2 = self.sigmoide(Z2)
 
             ## Erros ##
             error = self.custo(S2, y)
@@ -70,9 +76,10 @@ class Mlp():
             self.pesos_camada_1 -= self.taxa_aprendizado * gradiente_peso1
             self.bias_camada_oculta -= self.taxa_aprendizado * db1
 
-            print('S1', S1)
+            print('Z2', Z2)
             print('S2', S2)
-            print('Erro: ', error)
+            print(y)
+            #print('Erro: ', error)
 
             parametros = {
                 "pesos_camada_oculta": self.pesos_camada_1,

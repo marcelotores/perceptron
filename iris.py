@@ -3,13 +3,14 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import random
 import seaborn
-import mlp4
-
 import mlpf
-seaborn.set(style='whitegrid'); seaborn.set_context('talk')
+from sklearn.datasets import load_iris
+
+seaborn.set(style='whitegrid');
+seaborn.set_context('talk')
 #%matplotlib inline
 #%config InlineBackend.figure_format = 'retina'
-from sklearn.datasets import load_iris
+
 iris_data = load_iris()
 
 n_samples, n_features = iris_data.data.shape
@@ -58,34 +59,59 @@ test_X = np.array([i[:4] for i in file_test])
 test_y = np.array([i[4] for i in file_test])
 
 train_y = train_y.reshape((120, 1))
-print(train_X.shape)
-print(train_y.shape)
+test_y = test_y.reshape((30, 1))
+
+
+novo_y_treino = []
+for i in train_y:
+    if i == 0:
+        novo_y_treino.append([1, -1, -1])
+    elif i == 1:
+        novo_y_treino.append([-1, 1, -1])
+    else:
+        novo_y_treino.append([-1, -1, 1])
+
+y_treino_num = np.array(novo_y_treino)
+#print(y_treino_num)
+#print(test_y.shape)
+#novo_y_teste = np.array([])
+novo_y_teste = []
+for i in test_y:
+    if i == 0:
+        novo_y_teste.append([1, -1, -1])
+    elif i == 1:
+        novo_y_teste.append([-1, 1, -1])
+    else:
+        novo_y_teste.append([-1, -1, 1])
+y_num = np.array(novo_y_teste)
+#print(y_num.shape)
+#print(train_X)
+#print(y_treino_num)
 
 ## Parâmetros
-taxa_aprendizado = 0.1
+taxa_aprendizado = 0.01
 epocas = 1000
 qtd_neuronios_camada_oculta = 3
-
 qtd_neuronios_camada_saida = 3
 
 ## Definição de parâmetros
-#mlp = mlpf.Mlp(train_X, taxa_aprendizado, epocas, qtd_neuronios_camada_oculta, qtd_neuronios_camada_saida)
+mlp = mlpf.Mlp(train_X, taxa_aprendizado, epocas, qtd_neuronios_camada_oculta, qtd_neuronios_camada_saida)
 
 ## Treino
-#errors, param = mlp.treino(train_X, train_y)
+errors, param = mlp.treino(train_X, y_treino_num)
 
 ## Teste
-#y_pred = mlp.predicao(train_X, param["pesos_camada_oculta"], param["pesos_camada_saida"], param["bias_camada_oculta"], param["bias_camada_saida"])
-
+y_predicao = mlp.predicao(test_X, param["pesos_camada_oculta"], param["pesos_camada_saida"], param["bias_camada_oculta"], param["bias_camada_saida"])
+print(y_predicao)
 ## Cálculo de acurácia
-#num_correct_predictions = (y_pred == y).sum()
-#accuracy = (num_correct_predictions / y.shape[0]) * 100
-#print('Multi-layer perceptron accuracy: %.2f%%' % accuracy)
+#num_predicoes_corretas = (y_predicao == y_num).sum()
+#print('y_predicao', y_predicao)
+#print('rotulos', y_num)
+#print('num_predicoes_corretas', num_predicoes_corretas)
+
+#acuracia = (num_predicoes_corretas / y_num.shape[0]) * 100
+#print('Acurácia: %.2f%%' % acuracia)
 
 ##############
 
-errors, param = mlp4.fit(train_all, rotulo_all, n_features=4, n_neurons=4, n_output=3, iterations=5000, eta=0.1)
-# y_pred = mlp4.predict(test_all, param["W1"], param["W2"], param["b1"], param["b2"])
-# num_correct_predictions = (y_pred == rotulo_test_all).sum()
-# accuracy = (num_correct_predictions / y.shape[0]) * 100
-# print('Multi-layer perceptron accuracy: %.2f%%' % accuracy)
+#print(errors)
