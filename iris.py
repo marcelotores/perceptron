@@ -89,20 +89,40 @@ y_num = np.array(novo_y_teste)
 #print(y_treino_num)
 
 ## Parâmetros
-taxa_aprendizado = 0.01
-epocas = 1000
-qtd_neuronios_camada_oculta = 3
+taxa_aprendizado = 0.001
+epocas = 1
+qtd_neuronios_camada_oculta = 4
 qtd_neuronios_camada_saida = 3
 
 ## Definição de parâmetros
 mlp = mlpf.Mlp(train_X, taxa_aprendizado, epocas, qtd_neuronios_camada_oculta, qtd_neuronios_camada_saida)
 
 ## Treino
-errors, param = mlp.treino(train_X, y_treino_num)
+errors, param, Z2 = mlp.treino(train_X, y_treino_num)
+print('####################################################################3')
+def tangente_hiperbolica(soma_dos_pesos):
+    """Função tangente hiperbólica."""
+
+    return (np.exp(soma_dos_pesos) - np.exp(-soma_dos_pesos)) / (np.exp(soma_dos_pesos) + np.exp(-soma_dos_pesos))
+print('######################### Z2 ###########################')
+print(Z2)
+print('######################### S2 ###########################')
+print(tangente_hiperbolica(Z2))
+
+
+xpoints = Z2[:10, 0]
+ypoints = tangente_hiperbolica(xpoints)
+
+print('soma pesos: ', xpoints)
+print('tamh: ', ypoints)
+plt.plot(xpoints, ypoints, 'o')
+plt.show()
+#print(xpoints)
+#print(ypoints)
 
 ## Teste
-y_predicao = mlp.predicao(test_X, param["pesos_camada_oculta"], param["pesos_camada_saida"], param["bias_camada_oculta"], param["bias_camada_saida"])
-print(y_predicao)
+#y_predicao = mlp.predicao(test_X, param["pesos_camada_oculta"], param["pesos_camada_saida"], param["bias_camada_oculta"], param["bias_camada_saida"])
+#print(y_predicao)
 ## Cálculo de acurácia
 #num_predicoes_corretas = (y_predicao == y_num).sum()
 #print('y_predicao', y_predicao)
