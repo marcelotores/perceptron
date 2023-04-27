@@ -9,8 +9,8 @@ def sigmoide(soma_dos_pesos):
 # print(test_y)
 # test_y = np.where(test_y <= -0.6, -1, np.where(test_y <= 0.6, 0, 1))
 # print(test_y)
-S = np.array([9.78250757, 9.78323099, 9.78204876, 9.78359854])
-# 0.99994357 0.99994361 0.99994355 0.99994363
+S = np.array([0.45786936, 0.90537796, 0.5043019])
+# 0.61250861 0.71205342 0.62346976
 Z = sigmoide(S)
 print(Z)
 

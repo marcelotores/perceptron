@@ -50,7 +50,8 @@ class Mlp():
         #S2 = self.tangente_hiperbolica(Z2)
         S2 = self.sigmoide(Z2)
         #return np.where(S2 >= 0.5, 1, 0)
-        return np.where(S2 <= -0.6, -1, np.where(S2 <= 0.6, 0, 1))
+        #return np.where(S2 <= -0.6, -1, np.where(S2 <= 0.6, 0, 1))
+        return np.where(S2 <= 0.33, -1, np.where(S2 <= 0.66, 0, 1))
 
     def treino(self, X, y):
         ## ~~ Initialize parameters ~~##
@@ -103,4 +104,4 @@ class Mlp():
                 "bias_camada_saida": self.bias_camada_saida
             }
 
-        return errors, parametros
+        return errors, parametros, delta2
