@@ -8,9 +8,11 @@ class Mlp():
         self.qtd_neuronios_camada_saida = qtd_neuronios_camada_saida
 
         qtd_col_dataset = dataset.shape[1]
-        self.pesos_camada_1 = np.random.uniform(size=(qtd_col_dataset,  self.qtd_neuronios_camada_oculta))
+        self.pesos_camada_1 = np.zeros((qtd_col_dataset, self.qtd_neuronios_camada_oculta), dtype=np.float128)
+        #self.pesos_camada_1 = np.random.uniform(size=(qtd_col_dataset,  self.qtd_neuronios_camada_oculta))
         self.bias_camada_oculta = np.random.uniform(size=(1, self.qtd_neuronios_camada_oculta))
-        self.pesos_camada_2 = np.random.uniform(size=(self.qtd_neuronios_camada_oculta, self.qtd_neuronios_camada_saida))
+        self.pesos_camada_2 = np.zeros((self.qtd_neuronios_camada_oculta, self.qtd_neuronios_camada_saida), dtype=np.float128)
+        #self.pesos_camada_2 = np.random.uniform(size=(self.qtd_neuronios_camada_oculta, self.qtd_neuronios_camada_saida))
         self.bias_camada_saida = np.random.uniform(size=(1, self.qtd_neuronios_camada_saida))
 
     def funcao_linear(self, pesos, dataset, bias):
@@ -18,6 +20,16 @@ class Mlp():
 
     def sigmoide(self, soma_dos_pesos):
         return 1 / (1 + np.exp(-soma_dos_pesos))
+
+    def step(self, pesos1):
+        predicao = []
+        for p1 in pesos1:
+            if p1 > 0:
+                predicao.append(1)
+            else:
+                predicao.append(0)
+        arr = np.array(predicao)
+        return arr
 
     def tangente_hiperbolica(self, soma_dos_pesos):
         """Função tangente hiperbólica."""
@@ -30,9 +42,11 @@ class Mlp():
     def predicao(self, dataset, pesos_camada_1, pesos_camada_2, bias_camada_oculta, bias_camada_saida):
 
         Z1 = self.funcao_linear(pesos_camada_1, dataset, bias_camada_oculta)
+        #S1 = self.step(Z1)
         #S1 = self.sigmoide(Z1)
         S1 = self.tangente_hiperbolica(Z1)
         Z2 = self.funcao_linear(pesos_camada_2, S1, bias_camada_saida)
+        #S2 = self.step(Z2)
         S2 = self.tangente_hiperbolica(Z2)
         #S2 = self.sigmoide(Z2)
         #return np.where(S2 >= 0.5, 1, 0)
@@ -46,15 +60,16 @@ class Mlp():
 
         for _ in range(self.epocas):
             print(f'Época {_}')
-
+            #print(self.pesos_camada_1)
+            #print(self.pesos_camada_2)
             ## Forward ##
 
             Z1 = self.funcao_linear(self.pesos_camada_1, X, self.bias_camada_oculta)
-            S1 = self.tangente_hiperbolica(Z1)
-            #S1 = self.sigmoide(Z1)
+            #S1 = self.tangente_hiperbolica(Z1)
+            S1 = self.sigmoide(Z1)
             Z2 = self.funcao_linear(self.pesos_camada_2, S1, self.bias_camada_saida)
-            S2 = self.tangente_hiperbolica(Z2)
-            #S2 = self.sigmoide(Z2)
+            #S2 = self.tangente_hiperbolica(Z2)
+            S2 = self.sigmoide(Z2)
 
             ## Erros ##
             error = self.custo(S2, y)
@@ -88,4 +103,4 @@ class Mlp():
                 "bias_camada_saida": self.bias_camada_saida
             }
 
-        return errors, parametros, Z2
+        return errors, parametros
