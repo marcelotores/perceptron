@@ -43,12 +43,12 @@ class Mlp():
 
         Z1 = self.funcao_linear(pesos_camada_1, dataset, bias_camada_oculta)
         #S1 = self.step(Z1)
-        #S1 = self.sigmoide(Z1)
-        S1 = self.tangente_hiperbolica(Z1)
+        S1 = self.sigmoide(Z1)
+        #S1 = self.tangente_hiperbolica(Z1)
         Z2 = self.funcao_linear(pesos_camada_2, S1, bias_camada_saida)
         #S2 = self.step(Z2)
-        S2 = self.tangente_hiperbolica(Z2)
-        #S2 = self.sigmoide(Z2)
+        #S2 = self.tangente_hiperbolica(Z2)
+        S2 = self.sigmoide(Z2)
         #return np.where(S2 >= 0.5, 1, 0)
         return np.where(S2 <= -0.6, -1, np.where(S2 <= 0.6, 0, 1))
 
