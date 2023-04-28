@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 
 dados_df = pd.read_csv('dados_classificacao2.csv')
 
@@ -84,3 +85,26 @@ def divide_dados_treino_teste(dados, frac_treino):
         return pd.DataFrame(training_data), pd.DataFrame(testing_data)
 
     return training_data.to_numpy(), testing_data.to_numpy()
+
+def grafico_erro(erros):
+    loss_values = erros
+    epochs = range(1, len(loss_values) + 1)
+
+    plt.plot(epochs, loss_values, label='Erro de Treinamento')
+    plt.xlabel('Epocas')
+    plt.ylabel('Erro')
+    plt.legend()
+
+    plt.show()
+
+def converte_rotulo_3(y):
+    novo_y_teste = []
+    for i in y:
+        if i == 1:
+            novo_y_teste.append([1, -1, -1])
+        elif i == 2:
+            novo_y_teste.append([-1, 1, -1])
+        else:
+            novo_y_teste.append([-1, -1, 1])
+    y_num = np.array(novo_y_teste)
+    return y_num
